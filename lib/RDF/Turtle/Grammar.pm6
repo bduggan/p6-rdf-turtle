@@ -71,6 +71,7 @@ grammar RDF::Turtle::Grammar {
         | <integer>
         | <double>
         | <decimal>
+        | <boolean>
     }
 
     # [16]    integer     ::=    ('-' | '+') ? [0-9]+
@@ -99,19 +100,9 @@ grammar RDF::Turtle::Grammar {
         <[eE]> ['-' | '+']? <[0..9]>+
     }
 
-    # [35] quotedString ::= string | longString
-    token quotedString {
-        <longString> | <string>
-    }
-
-    # [37]    longString  ::=    #x22 #x22 #x22 lcharacter* #x22 #x22 #x22
-    regex longString { 
-        '"""' <lcharacter>* '"""'
-    }
- 
-    # [36] string ::= #x22 scharacter* #x22
-    token string {
-        '"' <.scharacter>* '"'
+    # [20]    boolean     ::=    'true' | 'false'
+    token boolean {
+        'true' | 'false'
     }
 
     # [21] blank ::= nodeID | '[]' | '[' predicateObjectList ']' | collection
@@ -194,6 +185,21 @@ grammar RDF::Turtle::Grammar {
     # [34] relativeURI ::= ucharacter*
     rule relativeURI {
         <.ucharacter>*
+    }
+
+    # [35] quotedString ::= string | longString
+    token quotedString {
+        <longString> | <string>
+    }
+
+    # [37]    longString  ::=    #x22 #x22 #x22 lcharacter* #x22 #x22 #x22
+    regex longString { 
+        '"""' <lcharacter>* '"""'
+    }
+ 
+    # [36] string ::= #x22 scharacter* #x22
+    token string {
+        '"' <.scharacter>* '"'
     }
 
     # [41] ucharacter ::= ( character - #x3E ) | '\>'
@@ -279,5 +285,4 @@ grammar RDF::Turtle::Grammar {
 }
 
 # [15]    datatypeString    ::=    quotedString '^^' resource
-# [20]    boolean     ::=    'true' | 'false'
 # [29]    language    ::=    [a-z]+ ('-' [a-z0-9]+ )*

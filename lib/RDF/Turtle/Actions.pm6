@@ -94,10 +94,18 @@ method literal($/) {
         // $<integer>.made
         // $<double>.made
         // $<decimal>.made
+        // $<boolean>.made
 }
 
 method decimal($/) {
     $/.make: $/.Rat;
+}
+
+method boolean($/) {
+    given "$/".lc {
+        when 'true' { $/.make: True }
+        when 'false' { $/.make: False }
+    }
 }
 
 method quotedString($/) {
