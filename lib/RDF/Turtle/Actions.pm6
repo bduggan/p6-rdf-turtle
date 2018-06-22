@@ -95,10 +95,15 @@ method literal($/) {
         // $<double>.made
         // $<decimal>.made
         // $<boolean>.made
+        // $<datatypeString>.made
 }
 
 method decimal($/) {
     $/.make: $/.Rat;
+}
+
+method datatypeString($/) {
+    $/.make: "$/";
 }
 
 method boolean($/) {

@@ -31,17 +31,17 @@ grammar RDF::Turtle::Grammar {
     }
 
     # [6] triples ::= subject predicateObjectList
-    rule triples {
+    regex triples { :s
         <subject> <predicateObjectList>
     }
 
     # [7] predicateObjectList ::= verb objectList ( ';' verb objectList )* ( ';')?
-    rule predicateObjectList {
+    regex predicateObjectList { :s
         [ <verb> <objectList> ]+ %% ';'
     }
 
     # [8] objectList ::= object ( ',' object)*
-    rule objectList {
+    regex objectList { :s
         <object>+ %% [ ',' | ' ' ]
     }
 
@@ -61,19 +61,30 @@ grammar RDF::Turtle::Grammar {
     }
 
     # [13] object ::= resource | blank | literal
-    token object {
+    regex object {
         <resource> | <blank> | <literal>
     }
 
     # [14] literal ::= quotedString ( '@' language )? | datatypeString | integer | double | decimal | boolean
-    token literal {
-        | <quotedString>
+    regex literal {
+        | <quotedString> [ '@' <language> ]?
         | <integer>
         | <double>
         | <decimal>
         | <boolean>
+        | <datatypeString>
     }
 
+    # [29]    language    ::=    [a-z]+ ('-' [a-z0-9]+ )*
+    token language {
+        <[a..z]>+ [ '-' <[a..z0..9]>+ ]*
+    }
+
+    # [15]    datatypeString    ::=    quotedString '^^' resource
+    token datatypeString {
+        <quotedString> '^^' <resource>
+    }
+    
     # [16]    integer     ::=    ('-' | '+') ? [0-9]+
     token integer {
        ['-' | '+']? <[0..9]>+
@@ -283,6 +294,3 @@ grammar RDF::Turtle::Grammar {
         return $match;
     }
 }
-
-# [15]    datatypeString    ::=    quotedString '^^' resource
-# [29]    language    ::=    [a-z]+ ('-' [a-z0-9]+ )*

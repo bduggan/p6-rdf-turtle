@@ -57,5 +57,9 @@ t 'TOP', q:to/DONE/;
     	literal with
     newlines""" .
     DONE
+t 'datatypeString', '"2.345"^^<http://www.w3.org/2001/XMLSchema#decimal>';
+t 'literal', '"2.345"^^<http://www.w3.org/2001/XMLSchema#decimal>';
+t 'object', '"2.345"^^<http://www.w3.org/2001/XMLSchema#decimal>';
+t 'objectList', '"2.345"^^<http://www.w3.org/2001/XMLSchema#decimal>';
 
 done-testing;
