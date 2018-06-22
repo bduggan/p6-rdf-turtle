@@ -14,5 +14,5 @@ Convert to N-triples format:
 
     ./eg/parse.p6 input.ttl --triples
 
-It also includes the TTL spec test (in [t/tests](t/tests)).
+It also includes the TTL spec tests (in [t/tests](t/tests)).
 
