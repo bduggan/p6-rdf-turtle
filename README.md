@@ -6,7 +6,7 @@
 
 This is a parser for the Terse RDF Triple Language.
 
-See https://www.w3.org/TeamSubmission/turtle/.
+See [https://www.w3.org/TeamSubmission/turtle/](https://www.w3.org/TeamSubmission/turtle/).
 
 Sample usage of RDF::Turtle:
 
