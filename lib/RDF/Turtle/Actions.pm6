@@ -14,6 +14,9 @@ my class URI {
 has %.prefixes is default('/');
 has @.blanks;
 has URI $.current-base is rw;
+method set-base(*%args) {
+    self.current-base = URI.new(|%args)
+}
 
 method TOP($/) {
    my @triples = $<statement>.map({|.made});
