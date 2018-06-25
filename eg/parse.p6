@@ -16,5 +16,9 @@ multi MAIN($file, Bool :$triples) {
     my $actions = RDF::Turtle::Actions.new;
     my $match = P.parse($file.IO.slurp, :$actions) or die "parse failed";
     my $out = $match.made;
-    say @$out.join(" .\n") ~ " .\n";
+    if $triples {
+        say @$out.join(" .\n") ~ " .\n";
+    } else {
+        say $match;
+    }
 }

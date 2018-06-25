@@ -17,12 +17,12 @@ has URI $.current-base is rw;
 
 method TOP($/) {
    my @triples = $<statement>.map({|.made});
-   $/.make: @triples.append(@.blanks);
+   $/.make: @triples;
 }
 
 method statement($/) {
-    with $<triples> {
-        $/.make: .made
+    with $<triples> -> $t {
+        $/.make: $t.made
     } else {
         $/.make: Slip.new
     }
@@ -42,7 +42,7 @@ method base($/) {
 }
 
 method triples($/) {
-    my $subject = $<subject>.made;
+    my $subject = $<subject>.made or die "no subject";
     my @triples;
     for $<predicateObjectList>.made -> $pair {
         @triples.push: ( $subject, |@$pair );
@@ -61,12 +61,7 @@ method predicateObjectList($/) {
 }
 
 method blank($/) {
-    my $subject = '_:blank' ~ $++;
-    my @triples;
-    for $<predicateObjectList>.made -> $pair {
-        @.blanks.push: ( $subject, |@$pair );
-    }
-    $/.make: $subject;
+    $/.make: '_:genid' ~ ++$;
 }
 
 method verb($/) {
@@ -118,7 +113,7 @@ method quotedString($/) {
 }
 
 method subject($/) {
-    $/.make: $<resource>.made;
+    $/.make: $<resource>.made // $<blank>.made;
 }
 
 method resource($/) {
