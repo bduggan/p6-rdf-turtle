@@ -1,7 +1,7 @@
 {
     "name" : "RDF::Turtle",
     "license" : "MIT",
-    "version" : "0.0.1",
+    "version" : "0.0.2",
     "perl" : "6.c",
     "description" : "Parse RDF Turtle files",
     "depends" : [ "Terminal::ANSIColor" ],
