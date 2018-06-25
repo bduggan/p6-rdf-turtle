@@ -2,7 +2,17 @@ This is a parser for the Terse RDF Triple Language.
 
 See https://www.w3.org/TeamSubmission/turtle/.
 
-It includes a sample command line parser, [eg/parse.p6](eg/parse.p6).
+Sample usage of RDF::Turtle:
+
+```p6
+my $parsed = parse-turtle('file.ttl'.IO.slurp);
+my $triples = $parsed.made;
+for @$triples -> ($subject, $predicate, $object) {
+    say "$subject $predicate $object .";
+}
+```
+
+Also included is a sample command line parser, [eg/parse.p6](eg/parse.p6).
 
 Sample usage:
 
@@ -14,5 +24,7 @@ Convert to N-triples format:
 
     ./eg/parse.p6 input.ttl --triples
 
-It also includes the TTL spec tests (in [t/tests](t/tests)).
+The spec tests are included in [t/tests](t/tests).  As of this
+writing, all of the good tests are parsed, and some of the correct
+outputs are generated.
 

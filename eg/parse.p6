@@ -1,23 +1,17 @@
 #!/usr/bin/env perl6
 
 use lib 'lib';
-use RDF::Turtle::Actions;
-use RDF::Turtle::Grammar;
+use RDF::Turtle;
 
 my %*SUB-MAIN-OPTS = :named-anywhere;
 
-multi MAIN($file) {
-    my \P = RDF::Turtle::Grammar.new;
-    say P.parse($file.IO.slurp);
-}
-
-multi MAIN($file, Bool :$triples) {
-    my \P = RDF::Turtle::Grammar.new;
-    my $actions = RDF::Turtle::Actions.new;
-    my $match = P.parse($file.IO.slurp, :$actions) or die "parse failed";
-    my $out = $match.made;
+sub MAIN($file, Bool :$triples) {
+    my $match = parse-turtle($file.IO.slurp);
     if $triples {
-        say @$out.join(" .\n") ~ " .\n";
+        my $trips = $match.made;
+        for @$trips -> ($subject, $predicate, $object) {
+            say "$subject $predicate $object .";
+        }
     } else {
         say $match;
     }
