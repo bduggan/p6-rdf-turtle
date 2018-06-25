@@ -2,15 +2,16 @@
 
 use RDF::Turtle::Error;
 
+# See https://www.w3.org/TeamSubmission/turtle/#sec-grammar-grammar
 grammar RDF::Turtle::Grammar {
     has $.quiet;
     has $!error;
 
     # [1] turtleDoc ::= statement*
-    rule TOP { [ <statement> | <.comment> ]* }
+    regex TOP {:s [ <statement> | <.comment> ]* }
 
     # [2] statement ::= directive '.' | triples '.' | ws+
-    rule statement {
+    regex statement {
         | <directive> '.'
         | <triples> '.'
     }
@@ -67,12 +68,12 @@ grammar RDF::Turtle::Grammar {
 
     # [14] literal ::= quotedString ( '@' language )? | datatypeString | integer | double | decimal | boolean
     regex literal {
-        | <quotedString> [ '@' <language> ]?
-        | <integer>
-        | <double>
-        | <decimal>
-        | <boolean>
-        | <datatypeString>
+        || <quotedString> [ '@' <language> ]?
+        || <datatypeString>
+        || <integer>
+        || <double>
+        || <decimal>
+        || <boolean>
     }
 
     # [29]    language    ::=    [a-z]+ ('-' [a-z0-9]+ )*
@@ -200,7 +201,7 @@ grammar RDF::Turtle::Grammar {
 
     # [35] quotedString ::= string | longString
     token quotedString {
-        <longString> | <string>
+        <longString> || <string>
     }
 
     # [37]    longString  ::=    #x22 #x22 #x22 lcharacter* #x22 #x22 #x22
@@ -214,9 +215,13 @@ grammar RDF::Turtle::Grammar {
     }
 
     # [41] ucharacter ::= ( character - #x3E ) | '\>'
-    token ucharacter {
-        | <.character> & <-[>]>
-        | '\>'
+    token ucharacter  {
+        || '\u' <hex> ** 4
+        || '\U' <hex> ** 8
+        || '\\'
+        || '\>'
+        || <[\c[0x20]..\c[0x5B]] - [>]>
+        || <[\c[0x5D]..\c[0x10FFFF]]>
     }
 
     # [42] scharacter    ::=    ( echaracter - #x22 ) | '\"'
@@ -237,11 +242,11 @@ grammar RDF::Turtle::Grammar {
     #                       | [#x20-#x5B]
     #                       | [#x5D-#x10FFFF]
     token character  {
-        | '\u' <hex> ** 4
-        | '\U' <hex> ** 8
-        | '\\'
-        | <[\c[0x20]..\c[0x5B]]>
-        | <[\c[0x5D]..\c[0x10FFFF]]>
+        || '\u' <hex> ** 4
+        || '\U' <hex> ** 8
+        || '\\\\'
+        || <[\c[0x20]..\c[0x5B]]>
+        || <[\c[0x5D]..\c[0x10FFFF]]>
     }
 
     # [39] echaracter ::= character | '\t' | '\n' | '\r'
