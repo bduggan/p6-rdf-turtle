@@ -1,3 +1,11 @@
+RDF::Turtle
+============
+
+[![Build Status](https://travis-ci.org/bduggan/p6-rdf-turtle.svg)](https://travis-ci.org/bduggan/p6-rdf-turtle)
+
+Description
+===========
+
 This is a parser for the Terse RDF Triple Language.
 
 See https://www.w3.org/TeamSubmission/turtle/.
