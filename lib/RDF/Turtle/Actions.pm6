@@ -134,7 +134,7 @@ method uriref($/) {
 
 method qname($/) {
     my $prefix-abbr = ~( $<prefixName> // '_noprefix' );
-    my $rel = ~$<name>;
+    my $rel = ~( $<name> // '_noname' );
     my $prefix = %.prefixes{ $prefix-abbr };
     my $base = '';
     if (not $rel.starts-with('http') and self.current-base ) {
